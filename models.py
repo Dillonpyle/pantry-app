@@ -1,5 +1,4 @@
 import datetime
-import config
 from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
@@ -7,8 +6,8 @@ from flask_login import UserMixin
 DATABASE = SqliteDatabase('pantry.sqlite')
 
 class User(UserMixin, Model):
-	username: CharField(unique=True),
-	password: CharField(),
+	username: CharField(unique=True)
+	password: CharField()
 	photo: CharField()
 
 	class Meta:
@@ -29,3 +28,46 @@ class User(UserMixin, Model):
 			raise Exception("User with email or username already exists")
 
 
+class Ingredient(Model):
+	name = CharField()
+	type = CharField()
+
+	class Meta:
+		database = DATABASE
+
+class Recipe(Model):
+	title: CharField()
+	image_url: CharField()
+	source_url: CharField()
+	publisher: CharField()
+	publisher_url: CharField()
+	social_rank: CharField()
+	created_by: ForeignKeyField(User)
+
+	class Meta: database = DATABASE
+
+## Ingredient of User 
+class Pantry(Model): 
+	ingedient_id: ForeignKeyField(Ingredient)
+	user_id: ForeignKeyField(User)
+	quantity: IntegerField()
+	created_at = DateTimeField(default=datetime.datetime.now)
+	class Meta: database = DATABASE
+
+class IngredientInRecipe(Model):
+		recipe_id: ForeignKeyField(Recipe)
+		ingredient_id: ForeignKeyField(Ingredient)
+
+		class Meta: database = DATABASE
+
+class RecipeOfUser(Model):
+	user_id: ForeignKeyField(User)
+	recipe_id: ForeignKeyField(Recipe)
+
+	class Meta: database = DATABASE
+
+
+def initialize():
+	DATABASE.connect()
+	DATABASE.create_tables([User, Ingredient, Recipe, Pantry, IngredientInRecipe, RecipeOfUser], safe=True)
+	DATABASE.close()
