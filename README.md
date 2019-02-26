@@ -52,19 +52,20 @@ Delete Recipe
 
 ### Recipe
 		id: IntegerField(),
+		title: CharField(),
 		image_url: CharField(),
 		source_url: CharField(),
-		title: CharField(),
 		publisher: CharField(),
 		publisher_url: CharField(),
 		social_rank: CharField(),
+		created_by: ForeignKeyField()
 
 ### Ingredient of User (Pantry)
 		id: IntegerField(),
 		ingedient_id: ForeignKeyField()
 		user_id: ForeignKeyField()
 
-### Ingredient in Recipie
+### Ingredient in Recipe
 		id: IntegerField(),
 		recipe_id: ForeignKeyField()
 		ingredient_id: ForeignKeyField()

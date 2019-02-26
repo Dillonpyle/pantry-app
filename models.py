@@ -3,7 +3,7 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('pantry.sqlite')
+DATABASE = SqliteDatabase('mypantry.sqlite')
 
 class User(UserMixin, Model):
 	username: CharField(unique=True)
@@ -44,7 +44,8 @@ class Recipe(Model):
 	social_rank: CharField()
 	created_by: ForeignKeyField(User)
 
-	class Meta: database = DATABASE
+	class Meta: 
+		database = DATABASE
 
 ## Ingredient of User 
 class Pantry(Model): 
@@ -52,19 +53,22 @@ class Pantry(Model):
 	user_id: ForeignKeyField(User)
 	quantity: IntegerField()
 	created_at = DateTimeField(default=datetime.datetime.now)
-	class Meta: database = DATABASE
+	class Meta: 
+		database = DATABASE
 
 class IngredientInRecipe(Model):
 		recipe_id: ForeignKeyField(Recipe)
 		ingredient_id: ForeignKeyField(Ingredient)
 
-		class Meta: database = DATABASE
+		class Meta: 
+			database = DATABASE
 
 class RecipeOfUser(Model):
 	user_id: ForeignKeyField(User)
 	recipe_id: ForeignKeyField(Recipe)
 
-	class Meta: database = DATABASE
+	class Meta: 
+		database = DATABASE
 
 
 def initialize():
