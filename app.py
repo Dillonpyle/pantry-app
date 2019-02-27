@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_bcrypt import check_password_hash
 from flask_cors import CORS
 
+from resources.users import users_api
 from resources.ingredients import ingredients_api
 
 
@@ -72,10 +73,12 @@ def logout():
 
 
 # set up cors
-CORS(ingredients_api, origin=[
+CORS(ingredients_api, origins=[
      "http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.register_blueprint(ingredients_api, url_prefix='/api/v1')
+app.register_blueprint(users_api, url_prefix='/api/v1')
 
 
 @app.route('/')
