@@ -9,13 +9,12 @@ DATABASE = SqliteDatabase('mypantry.sqlite')
 class User(UserMixin, Model):
     username = CharField(unique=True)
     password = CharField()
-    photo = CharField()
 
     class Meta:
         database = DATABASE
 
     @classmethod
-    def create_user(cls, username, password, photo):
+    def create_user(cls, username, password):
         try:
             cls.select().where(
                 (cls.username == username)
