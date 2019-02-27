@@ -7,9 +7,9 @@ DATABASE = SqliteDatabase('mypantry.sqlite')
 
 
 class User(UserMixin, Model):
-    username: CharField(unique=True)
-    password: CharField()
-    photo: CharField()
+    username = CharField(unique=True)
+    password = CharField()
+    photo = CharField()
 
     class Meta:
         database = DATABASE
@@ -38,13 +38,13 @@ class Ingredient(Model):
 
 
 class Recipe(Model):
-    title: CharField()
-    image_url: CharField()
-    source_url: CharField()
-    publisher: CharField()
-    publisher_url: CharField()
-    social_rank: CharField()
-    created_by: ForeignKeyField(User)
+    title = CharField()
+    image_url = CharField()
+    source_url = CharField()
+    publisher = CharField()
+    publisher_url = CharField()
+    social_rank = CharField()
+    created_by = ForeignKeyField(User)
 
     class Meta:
         database = DATABASE
@@ -53,9 +53,9 @@ class Recipe(Model):
 
 
 class Pantry(Model):
-    ingedient_id: ForeignKeyField(Ingredient)
-    user_id: ForeignKeyField(User)
-    quantity: IntegerField()
+    ingedient_id = ForeignKeyField(Ingredient)
+    user_id = ForeignKeyField(User)
+    quantity = IntegerField()
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -63,16 +63,16 @@ class Pantry(Model):
 
 
 class IngredientInRecipe(Model):
-    recipe_id: ForeignKeyField(Recipe)
-    ingredient_id: ForeignKeyField(Ingredient)
+    recipe_id = ForeignKeyField(Recipe)
+    ingredient_id = ForeignKeyField(Ingredient)
 
     class Meta:
         database = DATABASE
 
 
 class RecipeOfUser(Model):
-    user_id: ForeignKeyField(User)
-    recipe_id: ForeignKeyField(Recipe)
+    user_id = ForeignKeyField(User)
+    recipe_id = ForeignKeyField(Recipe)
 
     class Meta:
         database = DATABASE
