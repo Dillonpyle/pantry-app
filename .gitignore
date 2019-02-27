@@ -2,3 +2,5 @@
 mypantry.sqlite
 __pycache__
 *.py[cod]
+*.pyc
+__pycache__/models.cpython-37.pyc
