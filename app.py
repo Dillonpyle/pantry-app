@@ -79,7 +79,7 @@ app.register_blueprint(ingredients_api, url_prefix='/api/v1')
 
 
 @app.route('/')
-def hello_world():
+def index():
     return 'Pantry App'
 
 
