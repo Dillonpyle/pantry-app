@@ -29,8 +29,8 @@ class User(UserMixin, Model):
 
 
 class Ingredient(Model):
-    name = CharField()
-    type = CharField()
+    name = TextField(default=None)
+    type = TextField(default=None)
 
     class Meta:
         database = DATABASE
