@@ -30,7 +30,7 @@ class User(UserMixin, Model):
 
 class Ingredient(Model):
     name = TextField(default=None)
-    type = TextField(default=None)
+    typeof = TextField(default=None)
 
     class Meta:
         database = DATABASE
@@ -54,7 +54,7 @@ class Recipe(Model):
 class Pantry(Model):
     ingredient_id = ForeignKeyField(Ingredient)
     user_id = ForeignKeyField(User)
-    quantity = IntegerField()
+    quantity = IntegerField(default=1)
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:

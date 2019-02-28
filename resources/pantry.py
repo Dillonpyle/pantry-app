@@ -6,9 +6,9 @@ from flask_login import login_required
 import models
 
 pantry_fields = {
-	'ingredient_id': fields.Integer,
-	'user_id': fields.Integer,
-	'quantity': fields.Integer,
+	'ingredient_id': fields.String,
+	'user_id': fields.String,
+	'quantity': fields.String,
 	'created_at': fields.DateTime,
 }
 					# ingredient_id: ing_id,
@@ -40,6 +40,12 @@ class PantryList(Resource):
 			help = "No user_id provided",
 			location = ['form', 'json']
 			)
+		self.reqparse.add_argument(
+			'quantity',
+			required = False,
+			help = "No quantity provided",
+			location = ['form', 'json']
+			)
 		super().__init__()
 
 	## Get all pantry entries -- untested
@@ -56,19 +62,34 @@ class PantryList(Resource):
 		## check db to see if pantry item with user_id and ingredient_id already exists
 		try:
 			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+			print(pantry_entry, 'this is pantry_entry')
+			# query = models.Pantry.update(pantry_entry.quantity = pantry_entry.quantity + 1).where(models.Dog.id==id)
+			# ## we have to execute the update query
+			# query.execute()
+			## increase pantry_entry quantity by 1
+			## return pantry_entry
+
+
+			return 'pantry_entry found'
+
 		except models.Pantry.DoesNotExist:
 			## if it doesn't create pantry item
-			args.quantity = 1
-			print(args.quantity)
-			pantry_entry = models.Pantry.create(**args)
-			# 	ingredient_id=args['ingredient_id'],
-			# 	user_id=args['user_id'],
-			# 	quantity=1
-			# )
-			return 'must create a pantry entry'
-		else: 
-			## if it does increase quantity by 1
-			return 'pantry item must increase by 1'
+			print(args, '-- args after quantity has been defined')
+			print(args["ingredient_id"], 'this is ingredient id')
+			pantry_entry = models.Pantry.create(
+				ingredient_id=args["ingredient_id"],
+				user_id=args["user_id"],
+				quantity=1
+			)
+			# pantry_entry.save()
+			pantry_1 = models.Pantry.get(models.Pantry.id == 1)
+			print(pantry_1.__dict__)
+
+			# return [marshal(pantry_entry, pantry_fields)]
+			return pantry_1
+		# else: 
+		# 	## if it does increase quantity by 1
+		# 	return 'pantry item must increase by 1'
 
 class Pantry(Resource):
 	def __init__(self):

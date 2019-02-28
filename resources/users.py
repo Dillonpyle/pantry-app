@@ -12,7 +12,6 @@ import models
 user_fields = {
     'id': fields.String,
     'username': fields.String,
-    'id': fields.Integer
 }
 
 

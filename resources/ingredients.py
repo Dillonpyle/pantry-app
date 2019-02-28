@@ -8,7 +8,7 @@ import models
 ingredient_fields = {
 	'id': fields.Integer,
 	'name': fields.String,
-	'type': fields.String
+	'typeof': fields.String
 }
 
 def ingredient_or_404_id(ingredient_id):
@@ -39,9 +39,9 @@ class IngredientList(Resource):
 			location = ['form', 'json']
 			)
 		self.reqparse.add_argument(
-			'type',
+			'typeof',
 			required = True,
-			help = "No ingredient type provided",
+			help = "No ingredient typeof provided",
 			location = ['form', 'json']
 			)
 		super().__init__()
@@ -103,9 +103,9 @@ class Ingredient(Resource):
 			location = ['form', 'json']
 			)
 		self.reqparse.add_argument(
-			'type',
+			'typeof',
 			required = False,
-			help = "No ingredient type provided",
+			help = "No ingredient typeof provided",
 			location = ['form', 'json']
 			)
 
