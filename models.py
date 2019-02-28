@@ -52,7 +52,7 @@ class Recipe(Model):
 
 
 class Pantry(Model):
-    ingedient_id = ForeignKeyField(Ingredient)
+    ingredient_id = ForeignKeyField(Ingredient)
     user_id = ForeignKeyField(User)
     quantity = IntegerField()
     created_at = DateTimeField(default=datetime.datetime.now)

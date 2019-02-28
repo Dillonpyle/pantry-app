@@ -96,32 +96,33 @@ Delete Recipe
 ## Models
 
 ### User
-		id: IntegerField()
-		username: CharField()
-		password: CharField()
-		photo: CharField()
+		id = IntegerField()
+		username = CharField()
+		password = CharField()
+		photo = CharField()
 
 ### Ingredient
-		id: IntegerField(),
-		name: CharField(),
-		type: CharField(),
-		expiration: DateField(),
+		id = IntegerField(),
+		name = CharField(),
+		type = CharField(),
+		expiration = DateField(),
 
 ### Recipe
-		id: IntegerField(),
-		title: CharField(),
-		image_url: CharField(),
-		source_url: CharField(),
-		publisher: CharField(),
-		publisher_url: CharField(),
-		social_rank: CharField(),
-		created_by: ForeignKeyField()
+		id = IntegerField(),
+		title = CharField(),
+		image_url = CharField(),
+		source_url = CharField(),
+		publisher = CharField(),
+		publisher_url = CharField(),
+		social_rank = CharField(),
+		created_by = ForeignKeyField()
 
 ### Ingredient of User (Pantry)
-		id: IntegerField(),
-		ingedient_id: ForeignKeyField()
-		user_id: ForeignKeyField()
-		qty
+		id = IntegerField(),
+		ingedient_id = ForeignKeyField()
+		user_id = ForeignKeyField()
+    quantity = IntegerField()
+    created_at = DateTimeField(default=datetime.datetime.now)
 
 ### Ingredient in Recipe
 		id: IntegerField(),
@@ -129,9 +130,9 @@ Delete Recipe
 		ingredient_id: ForeignKeyField()
 
 ### Recipe of User
-		id: IntegerField(),
-		user_id: ForeignKeyField()
-		recipe_id: ForeignKeyField()
+		id = IntegerField(),
+		user_id = ForeignKeyField()
+		recipe_id = ForeignKeyField()
 
 
 
