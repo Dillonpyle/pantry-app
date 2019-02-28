@@ -10,6 +10,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 import models
 
 user_fields = {
+    'id': fields.String,
     'username': fields.String,
 }
 
@@ -31,6 +32,12 @@ class UserList(Resource):
         )
         super().__init__()
 
+    ## get all users
+    def get(self):
+        users = [marshal(user, user_fields) for user in models.User.select()]
+        return {'users': users}
+
+    ## login users
     def post(self):
         args = self.reqparse.parse_args()
         if args['password']:

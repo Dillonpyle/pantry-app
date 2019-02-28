@@ -48,20 +48,27 @@ class PantryList(Resource):
 		return {'pantry': pantry}
 
 	## create new pantry entry -- not working
-	# @marshal_with(pantry_fields)
+	@marshal_with(pantry_fields)
 	def post(self):
 		args = self.reqparse.parse_args()
 		print(args, '-- args in post request in pantry api')
 
 		## check db to see if pantry item with user_id and ingredient_id already exists
 		try:
-			ingredient = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
 		except models.Pantry.DoesNotExist:
 			## if it doesn't create pantry item
-			return "pantry item does not exist"
+			args.quantity = 1
+			print(args.quantity)
+			pantry_entry = models.Pantry.create(**args)
+			# 	ingredient_id=args['ingredient_id'],
+			# 	user_id=args['user_id'],
+			# 	quantity=1
+			# )
+			return 'must create a pantry entry'
 		else: 
 			## if it does increase quantity by 1
-			return 'pantry item must be created'
+			return 'pantry item must increase by 1'
 
 class Pantry(Resource):
 	def __init__(self):
