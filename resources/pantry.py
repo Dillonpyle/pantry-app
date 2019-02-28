@@ -8,9 +8,12 @@ import models
 pantry_fields = {
 	'ingredient_id': fields.Integer,
 	'user_id': fields.Integer,
-	# 'quantity': fields.Integer,
-	# 'created_at': fields.DateTime,
+	'quantity': fields.Integer,
+	'created_at': fields.DateTime,
 }
+					# ingredient_id: ing_id,
+					# user_id: this.props.user.user_id
+
 
 ## function that finds 
 def pantry_or_404_id(user_id):
@@ -26,15 +29,15 @@ class PantryList(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
 		self.reqparse.add_argument(
-			'name',
+			'ingredient_id',
 			required = True,
-			help = "No pantry name provided",
+			help = "No ingredient_id provided",
 			location = ['form', 'json']
 			)
 		self.reqparse.add_argument(
-			'type',
+			'user_id',
 			required = True,
-			help = "No pantry type provided",
+			help = "No user_id provided",
 			location = ['form', 'json']
 			)
 		super().__init__()
@@ -45,16 +48,27 @@ class PantryList(Resource):
 		return {'pantry': pantry}
 
 	## create new pantry entry -- not working
-	# @marshal_with(pantry_fields)
+	@marshal_with(pantry_fields)
 	def post(self):
 		args = self.reqparse.parse_args()
-		print(args, 'hitting args in post request in ingredients api')
-		print(args.user_id)
-		print(type(args.ing_id))
 		print(args, '-- args in post request in pantry api')
-		# pantry = models.Pantry.create(**args)
-		# return pantry
-		return 'hitting post route'
+
+		## check db to see if pantry item with user_id and ingredient_id already exists
+		try:
+			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+		except models.Pantry.DoesNotExist:
+			## if it doesn't create pantry item
+			args.quantity = 1
+			print(args.quantity)
+			pantry_entry = models.Pantry.create(**args)
+			# 	ingredient_id=args['ingredient_id'],
+			# 	user_id=args['user_id'],
+			# 	quantity=1
+			# )
+			return 'must create a pantry entry'
+		else: 
+			## if it does increase quantity by 1
+			return 'pantry item must increase by 1'
 
 class Pantry(Resource):
 	def __init__(self):
