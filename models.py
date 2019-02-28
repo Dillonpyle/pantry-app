@@ -3,7 +3,15 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('mypantry.sqlite')
+import config
+
+DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
+# DATABASE = PostgresqlDatabase(
+#     config.DATABASE_URI_PSQL,
+#     user=config.DATABASE_ADMIN,
+#     password=config.DATABASE_PASSWORD
+#     )
+
 
 
 class User(UserMixin, Model):

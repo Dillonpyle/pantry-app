@@ -4,3 +4,4 @@ __pycache__
 *.py[cod]
 *.pyc
 __pycache__/models.cpython-37.pyc
+config.py

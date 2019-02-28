@@ -10,13 +10,14 @@ from resources.pantry import pantry_api
 
 import models
 import forms
+import config
 
 
-DEBUG = True
-PORT = 8000
+DEBUG = config.DEBUG
+PORT = config.PORT
 
 app = Flask(__name__)
-app.secret_key = 'adkjfalj.adflja.dfnasdf.asd'
+app.secret_key = config.SECRET_KEY
 
 login_manager = LoginManager()
 # sets up our login for the app
