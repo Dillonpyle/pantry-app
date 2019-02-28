@@ -8,9 +8,12 @@ import models
 pantry_fields = {
 	'ingredient_id': fields.Integer,
 	'user_id': fields.Integer,
-	# 'quantity': fields.Integer,
-	# 'created_at': fields.DateTime,
+	'quantity': fields.Integer,
+	'created_at': fields.DateTime,
 }
+					# ingredient_id: ing_id,
+					# user_id: this.props.user.user_id
+
 
 ## function that finds 
 def pantry_or_404_id(user_id):
@@ -26,15 +29,15 @@ class PantryList(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
 		self.reqparse.add_argument(
-			'name',
+			'ingredient_id',
 			required = True,
-			help = "No pantry name provided",
+			help = "No ingredient_id provided",
 			location = ['form', 'json']
 			)
 		self.reqparse.add_argument(
-			'type',
+			'user_id',
 			required = True,
-			help = "No pantry type provided",
+			help = "No user_id provided",
 			location = ['form', 'json']
 			)
 		super().__init__()
@@ -48,10 +51,9 @@ class PantryList(Resource):
 	# @marshal_with(pantry_fields)
 	def post(self):
 		args = self.reqparse.parse_args()
-		print(args, 'hitting args in post request in ingredients api')
-		print(args.user_id)
-		print(type(args.ing_id))
 		print(args, '-- args in post request in pantry api')
+		print(args.user_id)
+		print(type(args.ingredient_id))
 		# pantry = models.Pantry.create(**args)
 		# return pantry
 		return 'hitting post route'
