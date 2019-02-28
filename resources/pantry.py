@@ -52,11 +52,16 @@ class PantryList(Resource):
 	def post(self):
 		args = self.reqparse.parse_args()
 		print(args, '-- args in post request in pantry api')
-		print(args.user_id)
-		print(type(args.ingredient_id))
-		# pantry = models.Pantry.create(**args)
-		# return pantry
-		return 'hitting post route'
+
+		## check db to see if pantry item with user_id and ingredient_id already exists
+		try:
+			ingredient = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+		except models.Pantry.DoesNotExist:
+			## if it doesn't create pantry item
+			return "pantry item does not exist"
+		else: 
+			## if it does increase quantity by 1
+			return 'pantry item must be created'
 
 class Pantry(Resource):
 	def __init__(self):
