@@ -34,9 +34,9 @@ def load_user(userid):
 
 
 # set up cors
-CORS(ingredients_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(pantry_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(ingredients_api, origins=[config.ORIGIN], supports_credentials=True)
+CORS(pantry_api, origins=[config.ORIGIN], supports_credentials=True)
+CORS(users_api, origins=[config.ORIGIN], supports_credentials=True)
 
 app.register_blueprint(ingredients_api, url_prefix='/api/v1')
 app.register_blueprint(pantry_api, url_prefix='/api/v1')
