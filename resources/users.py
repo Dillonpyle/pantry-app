@@ -11,6 +11,7 @@ import models
 
 user_fields = {
     'username': fields.String,
+    'id': fields.Integer
 }
 
 
@@ -37,7 +38,8 @@ class UserList(Resource):
             print(args, ' this is args')
             user = models.User.create_user(**args)
             login_user(user)
-            return marshal(user, user_fields), 201
+
+            return marshal(user, user_fields,), 201
         return make_response(
             json.dumps({
                 'error': 'Password and password verification do not match'
