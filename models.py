@@ -5,12 +5,12 @@ from flask_login import UserMixin
 
 import config
 
-DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
-# DATABASE = PostgresqlDatabase(
-#     config.DATABASE_URI_PSQL,
-#     user=config.DATABASE_ADMIN,
-#     password=config.DATABASE_PASSWORD
-#     )
+# DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
+DATABASE = PostgresqlDatabase(
+    config.DATABASE_URI_PSQL,
+    user=config.DATABASE_ADMIN,
+    password=config.DATABASE_PASSWORD
+    )
 
 
 
