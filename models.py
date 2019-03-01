@@ -63,10 +63,18 @@ class Ingredient(Model):
     class Meta:
         database = DATABASE
 
-
 class Recipe(Model):
     title = CharField()
     description = CharField()
+    image_url = CharField()
+    created_by = ForeignKeyField(User)
+
+    class Meta:
+        database = DATABASE
+
+
+class RecipeApi(Model):
+    title = CharField()
     image_url = CharField()
     source_url = CharField()
     publisher = CharField()
