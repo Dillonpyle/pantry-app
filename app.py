@@ -33,7 +33,8 @@ def load_user(userid):
 
 
 # set up cors
-CORS(ingredients_api, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(ingredients_api, origins=[
+     "http://localhost:3000"], supports_credentials=True)
 CORS(pantry_api, origins=["http://localhost:3000"], supports_credentials=True)
 CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 
@@ -58,10 +59,4 @@ if __name__ == '__main__':
     #     ## pass is do nothing
     #     pass
 
-
     app.run(debug=DEBUG, port=PORT)
-
-
-
-
-
