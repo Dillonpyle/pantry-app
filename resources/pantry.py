@@ -82,7 +82,7 @@ class PantryList(Resource):
 				quantity=1
 			)
 			# pantry_entry.save()
-			pantry_1 = models.Pantry.get(models.Pantry.id == 1)
+			pantry_1 = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
 			print(pantry_1.__dict__)
 
 			# return [marshal(pantry_entry, pantry_fields)]

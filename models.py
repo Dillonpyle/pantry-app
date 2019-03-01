@@ -6,7 +6,7 @@ from flask_login import UserMixin
 import config
 
 # DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
-DATABASE = PostgresqlDatabase(
+DATABASE = config.DATABASE_URL or PostgresqlDatabase(
     config.DATABASE_URI_PSQL,
     user=config.DATABASE_ADMIN,
     password=config.DATABASE_PASSWORD
