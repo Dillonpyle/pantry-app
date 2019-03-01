@@ -58,7 +58,7 @@ class RecipeList(Resource):
 		return recipes
 
 
-class Recipe(Resource):
+class RecipeEdit(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
 		self.reqparse.add_argument(
@@ -80,7 +80,7 @@ class Recipe(Resource):
 			location = ['form', 'json']
 			)
 
-	## EDIT RECIPE -- Working, but user_id should match created_user id of recipe
+	## EDIT RECIPE -- Working, with userid check
 	# @marshal_with(recipe_fields)
 	def put(self, id, user_id):
 		args = self.reqparse.parse_args()
@@ -95,7 +95,6 @@ class Recipe(Resource):
 		except models.Recipe.DoesNotExist:
 			return 'recipe does not exist or user does not have access'
 
-
 	## DELETE RECIPE -- working
 	def delete(self, id, user_id):
 		try:
@@ -106,16 +105,15 @@ class Recipe(Resource):
 		except models.Recipe.DoesNotExist:
 			return 'Recipe does not exist or user does not have access'
 
-		# print(recipe_to_delete.__dict__, 'this is recipe to delete')
-		# # if recipe_to_delete.created_by == user_id:
-		# # 	query = models.Recipe.delete().where(models.Recipe.id == id)
-		# # 	query.execute()
-		# # 	return "recipe deleted"
-		# # else:
-		# return "user doesn't have access"
 
-
-
+## Show one Recipe by id ---- working
+class Recipe(Resource):
+	def get(self, id):
+		try:
+			recipe = models.Recipe.get(models.Recipe.id == id)
+			return marshal(recipe, recipe_fields)
+		except models.Recipe.DoesNotExist:
+			return 'recipe does not exist'
 
 
 
@@ -128,16 +126,16 @@ api.add_resource(
 	endpoint="recipes"
 	)
 
-# api.add_resource(
-# 	RecipeEdit,
-# 	'/recipe/edit',
-# 	endpoint="recipes_edit"
-# 	)
-
 api.add_resource(
 	Recipe,
-	'/recipe/<int:id>/<int:user_id>',
+	'/recipe/<int:id>',
 	endpoint="recipe"
+	)
+
+api.add_resource(
+	RecipeEdit,
+	'/recipe/<int:id>/<int:user_id>',
+	endpoint="recipe_edit"
 	)
 
 
