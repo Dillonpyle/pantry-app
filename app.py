@@ -7,6 +7,7 @@ from resources.users import users_api
 from resources.ingredients import ingredients_api
 from resources.recipes import recipes_api
 from resources.pantry import pantry_api
+from resources.ingredient_in_recipe import ingredient_in_recipe_api
 
 
 import models
@@ -39,12 +40,14 @@ def load_user(userid):
 
 # set up cors
 CORS(ingredients_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
+CORS(ingredient_in_recipe_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
 CORS(recipes_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
 CORS(pantry_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
 CORS(users_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
 
 
 app.register_blueprint(ingredients_api, url_prefix='/api/v1')
+app.register_blueprint(ingredient_in_recipe_api, url_prefix='/api/v1')
 app.register_blueprint(recipes_api, url_prefix='/api/v1')
 app.register_blueprint(pantry_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/api/v1')

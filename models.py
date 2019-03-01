@@ -101,6 +101,8 @@ class Pantry(Model):
 class IngredientInRecipe(Model):
     recipe_id = ForeignKeyField(Recipe)
     ingredient_id = ForeignKeyField(Ingredient)
+    amount = CharField()
+    unit = CharField()
 
     class Meta:
         database = DATABASE
