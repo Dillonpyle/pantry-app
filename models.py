@@ -66,6 +66,7 @@ class Ingredient(Model):
 
 class Recipe(Model):
     title = CharField()
+    description = CharField()
     image_url = CharField()
     source_url = CharField()
     publisher = CharField()
