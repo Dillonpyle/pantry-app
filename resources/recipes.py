@@ -58,24 +58,18 @@ class RecipeList(Resource):
 		return recipes
 
 
-class RecipeEdit(Resource):
+class Recipe(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
 		self.reqparse.add_argument(
-			'id',
-			required = True,
-			help = "No id provided",
-			location = ['form', 'json']
-			)
-		self.reqparse.add_argument(
 			'title',
-			required = True,
+			required = False,
 			help = "No title provided",
 			location = ['form', 'json']
 			)
 		self.reqparse.add_argument(
 			'description',
-			required = True,
+			required = False,
 			help = "No description provided",
 			location = ['form', 'json']
 			)
@@ -85,23 +79,41 @@ class RecipeEdit(Resource):
 			help = "No image_url provided",
 			location = ['form', 'json']
 			)
-		self.reqparse.add_argument(
-			'created_by',
-			required = True,
-			help = "No username provided",
-			location = ['form', 'json']
-			)
 
-	@marshal_with(recipe_fields)
-	def put(self):
+	## EDIT RECIPE -- Working, but user_id should match created_user id of recipe
+	# @marshal_with(recipe_fields)
+	def put(self, id, user_id):
 		args = self.reqparse.parse_args()
-		print(args, 'hitting args in post request in RecipeEdit')
+		print(args, 'hitting args in put request in Recipe')
 
 		## update recipe by args.id with 
-		query = models.Recipe.update(**args).where(models.Recipe.id == args.id)
-		query.execute()
+		try:
+			recipe_to_update = models.Recipe.get(models.Recipe.id == id and models.Recipe.created_by == user_id)
+			query = models.Recipe.update(**args).where(models.Recipe.id == id)
+			query.execute()
+			return (marshal(models.Recipe.get(models.Recipe.id == id), recipe_fields), 200)
+		except models.Recipe.DoesNotExist:
+			return 'recipe does not exist or user does not have access'
 
-		return (models.Recipe.get(models.Recipe.id == args.id), 200)
+
+	## DELETE RECIPE -- working
+	def delete(self, id, user_id):
+		try:
+			recipe_to_delete = models.Recipe.get(models.Recipe.id == id and models.Recipe.created_by == user_id)
+			query = models.Recipe.delete().where(models.Recipe.id == id)
+			query.execute()
+			return "recipe deleted"
+		except models.Recipe.DoesNotExist:
+			return 'Recipe does not exist or user does not have access'
+
+		# print(recipe_to_delete.__dict__, 'this is recipe to delete')
+		# # if recipe_to_delete.created_by == user_id:
+		# # 	query = models.Recipe.delete().where(models.Recipe.id == id)
+		# # 	query.execute()
+		# # 	return "recipe deleted"
+		# # else:
+		# return "user doesn't have access"
+
 
 
 
@@ -116,8 +128,20 @@ api.add_resource(
 	endpoint="recipes"
 	)
 
+# api.add_resource(
+# 	RecipeEdit,
+# 	'/recipe/edit',
+# 	endpoint="recipes_edit"
+# 	)
+
 api.add_resource(
-	RecipeEdit,
-	'/recipe/edit',
-	endpoint="recipes_edit"
+	Recipe,
+	'/recipe/<int:id>/<int:user_id>',
+	endpoint="recipe"
 	)
+
+
+
+
+
+
