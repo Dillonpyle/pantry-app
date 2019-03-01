@@ -10,11 +10,14 @@ from resources.pantry import pantry_api
 
 import models
 import forms
-import config
 
-
-DEBUG = config.DEBUG
-PORT = config.PORT
+if 'HEROKU' in os.environ:
+    DEBUG = urlparse.urlparse(os.environ["DEBUG"])
+    PORT = urlparse.urlparse(os.environ["PORT"])
+else:
+    import config
+    DEBUG = config.DEBUG
+    PORT = config.PORT
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY

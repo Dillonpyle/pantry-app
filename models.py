@@ -4,7 +4,7 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 import os
 
-import config
+# import config
 
 
 # DATABASE_URL = os.environ['DATABASE_URL']
@@ -25,7 +25,7 @@ if 'HEROKU' in os.environ:
     DATABASE = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
     # db_proxy.initialize(db)
 else:
-    DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
+    DATABASE = SqliteDatabase('mypantry.sqlite')
     # DATABASE = conn or PostgresqlDatabase(
     #     config.DATABASE_URI_PSQL,
     #     user=config.DATABASE_ADMIN,
