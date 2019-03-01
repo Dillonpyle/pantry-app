@@ -2,15 +2,20 @@ import datetime
 from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
+import os
+import psycopg2
 
 import config
 
+DATABASE_URL = os.environ['DATABASE_URL']
+
 # DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
-DATABASE = config.DATABASE_URL or PostgresqlDatabase(
-    config.DATABASE_URI_PSQL,
-    user=config.DATABASE_ADMIN,
-    password=config.DATABASE_PASSWORD
-    )
+DATABASE = psycopg2.connect(DATABASE_URL, sslmode='require') #or 
+ # PostgresqlDatabase(
+ #    config.DATABASE_URI_PSQL,
+ #    user=config.DATABASE_ADMIN,
+ #    password=config.DATABASE_PASSWORD
+ #    )
 
 
 
