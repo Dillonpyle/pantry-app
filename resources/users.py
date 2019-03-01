@@ -93,6 +93,7 @@ class UserLogin(Resource):
                 login_user(user)
                 print("User found in database: ", user.username)
                 return make_response(json.dumps({
+                    "id": user.id,
                     "username": user.username
                 }), 200)
             else:

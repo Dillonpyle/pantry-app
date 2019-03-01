@@ -62,15 +62,16 @@ class PantryList(Resource):
 		## check db to see if pantry item with user_id and ingredient_id already exists
 		try:
 			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
-			print(pantry_entry, 'this is pantry_entry')
+			print(pantry_entry.__dict__, 'this is pantry_entry')
+			pantry_entry.quantity += 1
+			pantry_entry.save()
+			print(pantry_entry.__dict__, 'this is pantry_entry with increased quantity')
 			# query = models.Pantry.update(pantry_entry.quantity = pantry_entry.quantity + 1).where(models.Dog.id==id)
 			# ## we have to execute the update query
 			# query.execute()
 			## increase pantry_entry quantity by 1
 			## return pantry_entry
-
-
-			return 'pantry_entry found'
+			return pantry_entry
 
 		except models.Pantry.DoesNotExist:
 			## if it doesn't create pantry item
