@@ -3,19 +3,34 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 import os
-import psycopg2
 
 import config
 
-DATABASE_URL = os.environ['DATABASE_URL']
+
+# DATABASE_URL = os.environ['DATABASE_URL']
+
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
-DATABASE = psycopg2.connect(DATABASE_URL, sslmode='require') #or 
- # PostgresqlDatabase(
- #    config.DATABASE_URI_PSQL,
- #    user=config.DATABASE_ADMIN,
- #    password=config.DATABASE_PASSWORD
- #    )
+# DATABASE = conn or PostgresqlDatabase(
+#     config.DATABASE_URI_PSQL,
+#     user=config.DATABASE_ADMIN,
+#     password=config.DATABASE_PASSWORD
+#     )
+
+if 'HEROKU' in os.environ:
+    import urlparse, psycopg2
+    urlparse.uses_netloc.append('postgres')
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    DATABASE = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
+    # db_proxy.initialize(db)
+else:
+    DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
+    # DATABASE = conn or PostgresqlDatabase(
+    #     config.DATABASE_URI_PSQL,
+    #     user=config.DATABASE_ADMIN,
+    #     password=config.DATABASE_PASSWORD
+    #     )
 
 
 
