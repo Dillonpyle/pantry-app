@@ -100,17 +100,16 @@ class Pantry(Resource):
 			location = ['form', 'json']
 			)
 
-
-
-	## Display all pantry Items of User ============================= Look here dummy
+	## Display all pantry Items of User ============================= WORKING
 	# @marshal_with(pantry_fields)
 	def post(self):
 		try:
 			args = self.reqparse.parse_args()
 			print(args, 'these are args')
 			print(args.user_id, 'this is args.user_id')
-			users_pantry = models.Pantry.select().where(models.Pantry.user_id == args.user_id)
-			print(users_pantry.__dict__)
+			# users_pantry = models.Pantry.select().where(models.Pantry.user_id == args.user_id)
+			# print(users_pantry.__dict__)
+			users_pantry = pantry_or_404_id(args.user_id)
 			return [marshal(pantry, pantry_fields) for pantry in users_pantry]
 		except Exception as e:
 			return 'pantry does not exist'
@@ -118,21 +117,103 @@ class Pantry(Resource):
 
 ## ===================================================================
 
+class PantryAdd(Resource):
+	def __init__(self):
+		self.reqparse = reqparse.RequestParser()
+		self.reqparse.add_argument(
+			'user_id',
+			required = True,
+			help = "no user_id provided",
+			location = ['form', 'json']
+			)
+		self.reqparse.add_argument(
+			'ingredient_id',
+			required = True,
+			help = "no user_id provided",
+			location = ['form', 'json']
+			)
 
-
-  ## Update route -- untested
-	@marshal_with(pantry_fields)
-	def put(self, id):
+## Increase the quantity of a pantry item by 1 ============== WORKING
+	def post(self):
 		args = self.reqparse.parse_args()
-		query = models.Pantry.update(**args).where(models.Pantry.id==id)
-		query.execute()
-		return (models.Pantry.get(models.Pantry.id==id), 200)
+		print(args, 'these are args')
+		try:
+			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+			print(pantry_entry.__dict__, 'this is pantry_entry')
+			
+			## increase pantry_entry quantity by 1
+			pantry_entry.quantity += 1
+			pantry_entry.save()
+			print(pantry_entry.__dict__, 'this is pantry_entry with increased quantity')
 
-	## delete route -- untested
-	def delete(self, id):
-		query = models.Pantry.delete().where(models.Pantry.id==id)
+			return marshal(pantry_entry, pantry_fields)
+		except Exception as e:
+			return 'pantry entry does not exist'
+
+## DELETE A PANTRY ENTRY ================================== WORKING
+	def delete(self):
+		args = self.reqparse.parse_args()
+		print(args, 'these are args')
+		query = models.Pantry.delete().where(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id)
 		query.execute()
-		return "pantry was deleted"
+		return 'pantry entry deleted'
+
+
+
+class PantrySub(Resource):
+	def __init__(self):
+		self.reqparse = reqparse.RequestParser()
+		self.reqparse.add_argument(
+			'user_id',
+			required = True,
+			help = "no user_id provided",
+			location = ['form', 'json']
+			)
+		self.reqparse.add_argument(
+			'ingredient_id',
+			required = True,
+			help = "no user_id provided",
+			location = ['form', 'json']
+			)
+
+## Reduce the quantity of a pantry item by 1 ============== WORKING
+	def post(self):
+		args = self.reqparse.parse_args()
+		print(args, 'these are args')
+		try:
+			pantry_entry = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
+			print(pantry_entry.__dict__, 'this is pantry_entry')
+			
+			## increase pantry_entry quantity by 1
+			if pantry_entry.quantity > 0:
+				pantry_entry.quantity -= 1
+				pantry_entry.save()
+			print(pantry_entry.__dict__, 'this is pantry_entry with increased quantity')
+			print(pantry_entry.quantity, 'pantry entry quantity in /pantry/sub')
+
+			return marshal(pantry_entry, pantry_fields)
+		except Exception as e:
+			return 'pantry entry does not exist'
+
+
+
+
+
+
+## These do nothing at the moment
+ #  ## Update route -- untested
+	# @marshal_with(pantry_fields)
+	# def put(self, id):
+	# 	args = self.reqparse.parse_args()
+	# 	query = models.Pantry.update(**args).where(models.Pantry.id==id)
+	# 	query.execute()
+	# 	return (models.Pantry.get(models.Pantry.id==id), 200)
+
+	# ## delete route -- untested
+	# def delete(self, id):
+	# 	query = models.Pantry.delete().where(models.Pantry.id==id)
+	# 	query.execute()
+	# 	return "pantry was deleted"
 
 
 pantry_api = Blueprint('resources.pantry', __name__)
@@ -150,5 +231,14 @@ api.add_resource(
 	endpoint="pantry"
 	)
 
+api.add_resource(
+	PantryAdd,
+	'/pantry/add',
+	endpoint="pantry_add"
+	)
 
-
+api.add_resource(
+	PantrySub,
+	'/pantry/sub',
+	endpoint="pantry_sub"
+	)
