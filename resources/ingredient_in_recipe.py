@@ -13,6 +13,20 @@ ingredient_in_recipe_fields = {
 	'unit': fields.String
 }
 
+ingredient_recipe_join_fields = {
+	'recipe_id': fields.String,
+	'ingredient_id': fields.String,
+	'amount': fields.String,
+	'unit': fields.String,
+	'name': fields.String,
+	'typeof': fields.String
+}
+
+ingredient_fields = {
+	"name": fields.String,
+	"typeof": fields.String
+}
+
 # >>> query = User.select()
 # >>> [user.username for user in query]
 # ['Charlie', 'Huey', 'Peewee']
@@ -68,6 +82,16 @@ def i_in_r_or_404_id(recipe_id):
 		## this sends our 404 response for us
 		abort(404)
 
+def ingredients_of_id(i_ids):
+	try:
+		query = models.Ingredient.select()
+
+
+
+		return 'sup nerd'
+	except models.Ingredients.DoesNotExist:
+		abort(404)
+
 class RecipeIngredientList(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
@@ -78,15 +102,54 @@ class RecipeIngredientList(Resource):
 			location = ['form', 'json']
 			)
 
-	## Display all Ingredients In Recipe ============================= NOT WORKING
+	## Display all Ingredients In Recipe =========================== Return ingredient ids!
 	# @marshal_with(pantry_fields)
 	def post(self):
 		try:
 			args = self.reqparse.parse_args()
 			print(args, 'these are args')
 			print(args.recipe_id, 'this is args.recipe_id')
-			ingredients_in_recipe = i_in_r_or_404_id(args.recipe_id)
-			return [marshal(ingredient, ingredient_in_recipe_fields) for ingredient in ingredients_in_recipe]
+
+# Tweet.select().join(User).where(
+# (User.is_staff == True) | (User.is_superuser == True))
+			## I have recipe_id.. IngredientInRecipe has recipe_id and ingredient_id
+			## need to for ingredient_id that belong to recipe of r_id
+			## need to return all ingredients of ingredient_id
+
+			# ingredients_in_recipe = i_in_r_or_404_id(args.recipe_id)
+			# ingredient_id_list = [ingredient.id for ingredient in ingredients_in_recipe]
+			# print(ingredient_id_list, ' -- ingredient_id_list')
+
+			# ingredients = [models.Ingredient.select().where(models.Ingredient.id == id for id in ingredient_id_list)]
+			# for ingredient in ingredients:
+			# 	print(ingredient.name)
+
+			## works but inefficient
+			# for id in ingredient_id_list:
+			# 	query = models.Ingredient.select().where(models.Ingredient.id == id)
+			# 	for row in query:
+			# 		print(row.__dict__)
+
+			# Tweet.select().join(User).where(
+			# (User.is_staff == True) | (User.is_superuser == True))
+
+			## this query would work if right outer joins were supported, write to be left_outer join
+			# query = models.IngredientInRecipe.select().join(models.Ingredient, models.JOIN.RIGHT_OUTER).where(
+			# 	models.IngredientInRecipe.recipe_id == args.recipe_id)# &
+				# models.Ingredient.id == models.IngredientInRecipe.ingredient_id))
+
+			## need a full join but not supported by ORM... this will have to do.
+			query = models.Ingredient.select().join(models.IngredientInRecipe, models.JOIN.LEFT_OUTER).where(
+				models.IngredientInRecipe.recipe_id == args.recipe_id)
+			for ingredient in query:
+				print(ingredient.__dict__) ## all ingredient names and types
+
+			query_amt = models.IngredientInRecipe.select().join(models.Ingredient, models.JOIN.LEFT_OUTER).where(
+				models.IngredientInRecipe.recipe_id == args.recipe_id)
+			for row in query_amt:
+				print(row.__dict__) ## all ingredient amounts and units
+
+			return [marshal(ingredient, ingredient_fields) for ingredient in query]
 			# return "it'll be ok"
 		except Exception as e:
 			print(e)

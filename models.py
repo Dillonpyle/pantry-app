@@ -1,5 +1,6 @@
 import datetime
 from peewee import *
+from peewee import JOIN
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 import os
