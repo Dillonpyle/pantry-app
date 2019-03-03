@@ -11,6 +11,12 @@ pantry_fields = {
 	'quantity': fields.String,
 	'created_at': fields.DateTime,
 }
+
+ingredient_fields = {
+	'id': fields.Integer,
+	'name': fields.String,
+	'typeof': fields.String
+}
 					# ingredient_id: ing_id,
 					# user_id: this.props.user.user_id
 
@@ -100,6 +106,10 @@ class Pantry(Resource):
 			location = ['form', 'json']
 			)
 
+			# query = models.Ingredient.select().join(models.IngredientInRecipe, models.JOIN.LEFT_OUTER).where(
+			# 	models.IngredientInRecipe.recipe_id == args.recipe_id)
+			# for ingredient in query:
+			# 	print(ingredient.__dict__) ## all ingredient names and types
 	## Display all pantry Items of User ============================= WORKING
 	# @marshal_with(pantry_fields)
 	def post(self):
@@ -107,10 +117,14 @@ class Pantry(Resource):
 			args = self.reqparse.parse_args()
 			print(args, 'these are args')
 			print(args.user_id, 'this is args.user_id')
-			# users_pantry = models.Pantry.select().where(models.Pantry.user_id == args.user_id)
-			# print(users_pantry.__dict__)
-			users_pantry = pantry_or_404_id(args.user_id)
-			return [marshal(pantry, pantry_fields) for pantry in users_pantry]
+
+			users_pantry = models.Ingredient.select().join(models.Pantry, models.JOIN.LEFT_OUTER).where(
+				models.Pantry.user_id == args.user_id)
+
+			## working for returing ids but can't full join with Ingredient to show name and type
+			# users_pantry = pantry_or_404_id(args.user_id)
+
+			return [marshal(pantry, ingredient_fields) for pantry in users_pantry]
 		except Exception as e:
 			return 'pantry does not exist'
     ## define a function to find our pantry or send our 404		
