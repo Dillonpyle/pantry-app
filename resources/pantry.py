@@ -15,7 +15,8 @@ pantry_fields = {
 ingredient_fields = {
 	'id': fields.Integer,
 	'name': fields.String,
-	'typeof': fields.String
+	'typeof': fields.String,
+	'quantity': fields.String
 }
 					# ingredient_id: ing_id,
 					# user_id: this.props.user.user_id
