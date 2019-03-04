@@ -27,44 +27,6 @@ ingredient_fields = {
 	"typeof": fields.String
 }
 
-# >>> query = User.select()
-# >>> [user.username for user in query]
-# ['Charlie', 'Huey', 'Peewee']
-
-# >>> query[1]
-# <__main__.User at 0x7f83e80f5550>
-
-# >>> query[1].username
-# 'Huey'
-
-# >>> query[:2]
-# [<__main__.User at 0x7f83e80f53a8>, <__main__.User at 0x7f83e80f5550>]
-
-#### NONE OF THIS BULLSHIT WORKS ============================================
-
-# class AllIngredientsInRecipes(Resource):
-# 	def get(self):
-# 		try:
-# 			query = models.IngredientInRecipe.selcet()
-# 			ingredient_in_recipe = [ingredient for ingredient in query]
-
-
-
-# # Show all ingredients in recipe -- UNTESTED, add some ingredients to a recipe
-# # need recipe id
-# class RecipeIngredientList(Resource):
-# 	def get(self, r_id):
-# 		try:
-# 			## query is not working... make it work
-# 			query = models.IngredientInRecipe.select().where(models.IngredientInRecipe.recipe_id == r_id)
-# 			recipe_ingredinets = [ingredient.unit for ingredient in query]
-
-# 			# recipe_ingredinets = [marshal(list_item, ingredient_in_recipe_fields) for list_item in models.IngredientInRecipe.select().where(models.IngredientInRecipe.recipe_id == r_id)]
-
-# 			print(recipe_ingredients)
-# 			return recipe_ingredients
-
-
 # 			## MIGHT STILL NEED THIS
 # 			# recipe_ingredients = models.IngredientInRecipe.get(models.IngredientInRecipe.id == id)
 # 			# return marshal(recipe_ingredients, ingredient_in_recipe_fields)
@@ -110,28 +72,11 @@ class RecipeIngredientList(Resource):
 			print(args, 'these are args')
 			print(args.recipe_id, 'this is args.recipe_id')
 
-# Tweet.select().join(User).where(
-# (User.is_staff == True) | (User.is_superuser == True))
-			## I have recipe_id.. IngredientInRecipe has recipe_id and ingredient_id
-			## need to for ingredient_id that belong to recipe of r_id
-			## need to return all ingredients of ingredient_id
-
-			# ingredients_in_recipe = i_in_r_or_404_id(args.recipe_id)
-			# ingredient_id_list = [ingredient.id for ingredient in ingredients_in_recipe]
-			# print(ingredient_id_list, ' -- ingredient_id_list')
-
-			# ingredients = [models.Ingredient.select().where(models.Ingredient.id == id for id in ingredient_id_list)]
-			# for ingredient in ingredients:
-			# 	print(ingredient.name)
-
 			## works but inefficient
 			# for id in ingredient_id_list:
 			# 	query = models.Ingredient.select().where(models.Ingredient.id == id)
 			# 	for row in query:
 			# 		print(row.__dict__)
-
-			# Tweet.select().join(User).where(
-			# (User.is_staff == True) | (User.is_superuser == True))
 
 			## this query would work if right outer joins were supported, write to be left_outer join
 			# query = models.IngredientInRecipe.select().join(models.Ingredient, models.JOIN.RIGHT_OUTER).where(
