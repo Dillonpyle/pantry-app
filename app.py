@@ -18,8 +18,8 @@ import forms
 #     PORT = urlparse.urlparse(os.environ["PORT"])
 # else:
 import config
-DEBUG = config.DEBUG
-PORT = config.PORT
+DEBUG = True
+PORT = 8000
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -39,11 +39,11 @@ def load_user(userid):
 
 
 # set up cors
-CORS(ingredients_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
-CORS(ingredient_in_recipe_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
-CORS(recipes_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
-CORS(pantry_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
-CORS(users_api, origins=[config.ORIGIN or "http://localhost:3000"], supports_credentials=True)
+CORS(ingredients_api, origins=["https://pantry-pal-fe.herokuapp.com/", "http://localhost:3000"], supports_credentials=True)
+CORS(ingredient_in_recipe_api, origins=["https://pantry-pal-fe.herokuapp.com/", "http://localhost:3000"], supports_credentials=True)
+CORS(recipes_api, origins=["https://pantry-pal-fe.herokuapp.com/", "http://localhost:3000"], supports_credentials=True)
+CORS(pantry_api, origins=["https://pantry-pal-fe.herokuapp.com/", "http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["https://pantry-pal-fe.herokuapp.com/", "http://localhost:3000"], supports_credentials=True)
 
 
 app.register_blueprint(ingredients_api, url_prefix='/api/v1')
@@ -57,6 +57,12 @@ app.register_blueprint(users_api, url_prefix='/api/v1')
 def index():
     return 'Pantry App'
 
+import os
+## import os at the top of your file 
+
+if 'HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
 if __name__ == '__main__':
     models.initialize()

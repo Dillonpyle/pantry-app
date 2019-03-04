@@ -3,6 +3,7 @@ from peewee import *
 from peewee import JOIN
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
+from playhouse.db_url import connect
 import os
 
 # import config
@@ -18,12 +19,13 @@ import os
 #     user=config.DATABASE_ADMIN,
 #     password=config.DATABASE_PASSWORD
 #     )
+    # import urlparse, psycopg2
+    # urlparse.uses_netloc.append('postgres')
+    # url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    # DATABASE = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
 
 if 'HEROKU' in os.environ:
-    import urlparse, psycopg2
-    urlparse.uses_netloc.append('postgres')
-    url = urlparse.urlparse(os.environ["DATABASE_URL"])
-    DATABASE = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
+    DATABASE = connect(os.environ.get('DATABASE_URL'))
     # db_proxy.initialize(db)
 else:
     DATABASE = SqliteDatabase('mypantry.sqlite')
