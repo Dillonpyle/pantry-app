@@ -17,12 +17,12 @@ import forms
 #     DEBUG = urlparse.urlparse(os.environ["DEBUG"])
 #     PORT = urlparse.urlparse(os.environ["PORT"])
 # else:
-import config
+# import config
 DEBUG = True
 PORT = 8000
 
 app = Flask(__name__)
-app.secret_key = config.SECRET_KEY
+app.secret_key = "af;ljlwenncv__lnwecvjkso"
 
 login_manager = LoginManager()
 # sets up our login for the app
