@@ -57,6 +57,27 @@ class RecipeList(Resource):
 		recipes = [marshal(recipe, recipe_fields) for recipe in models.Recipe.select()]
 		return recipes
 
+class RecipeSearch(Resource):
+	def __init__(self):
+		self.reqparse = reqparse.RequestParser()
+		self.reqparse.add_argument(
+			'query',
+			required = False,
+			help = "No title provided",
+			location = ['form', 'json']
+			)
+
+	def post(self):
+		args = self.reqparse.parse_args()
+		print(args, 'hitting args in put request in Recipe')
+		try:
+			recipes = models.Recipe.select().where(models.Recipe.title ** f'%{args.query}%')
+		except models.Recipe.DoesNotExist:
+			return "ingredient does not exist"
+		else: 
+			return [marshal(recipe, recipe_fields) for recipe in recipes ]
+
+
 
 class RecipeEdit(Resource):
 	def __init__(self):
@@ -124,6 +145,12 @@ api.add_resource(
 	RecipeList,
 	'/recipes',
 	endpoint="recipes"
+	)
+
+api.add_resource(
+	RecipeSearch,
+	'/recipe/search',
+	endpoint="recipe_search"
 	)
 
 api.add_resource(
