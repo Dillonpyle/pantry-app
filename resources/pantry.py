@@ -16,10 +16,7 @@ ingredient_fields = {
 	'id': fields.Integer,
 	'name': fields.String,
 	'typeof': fields.String,
-	'quantity': fields.String
 }
-					# ingredient_id: ing_id,
-					# user_id: this.props.user.user_id
 
 
 ## function that finds 
@@ -87,15 +84,10 @@ class PantryList(Resource):
 				quantity=1
 			)
 			pantry_entry.save()
-			# pantry_1 = models.Pantry.get(models.Pantry.user_id == args.user_id and models.Pantry.ingredient_id == args.ingredient_id )
-			# print(pantry_1.__dict__)
 			print(pantry_entry.__dict__)
 
-			# return [marshal(pantry_entry, pantry_fields)]
+
 			return pantry_entry
-		# else: 
-		# 	## if it does increase quantity by 1
-		# 	return 'pantry item must increase by 1'
 
 class Pantry(Resource):
 	def __init__(self):
@@ -107,10 +99,6 @@ class Pantry(Resource):
 			location = ['form', 'json']
 			)
 
-			# query = models.Ingredient.select().join(models.IngredientInRecipe, models.JOIN.LEFT_OUTER).where(
-			# 	models.IngredientInRecipe.recipe_id == args.recipe_id)
-			# for ingredient in query:
-			# 	print(ingredient.__dict__) ## all ingredient names and types
 	## Display all pantry Items of User ============================= WORKING
 	# @marshal_with(pantry_fields)
 	def post(self):
@@ -209,26 +197,6 @@ class PantrySub(Resource):
 			return marshal(pantry_entry, pantry_fields)
 		except Exception as e:
 			return 'pantry entry does not exist'
-
-
-
-
-
-
-## These do nothing at the moment
- #  ## Update route -- untested
-	# @marshal_with(pantry_fields)
-	# def put(self, id):
-	# 	args = self.reqparse.parse_args()
-	# 	query = models.Pantry.update(**args).where(models.Pantry.id==id)
-	# 	query.execute()
-	# 	return (models.Pantry.get(models.Pantry.id==id), 200)
-
-	# ## delete route -- untested
-	# def delete(self, id):
-	# 	query = models.Pantry.delete().where(models.Pantry.id==id)
-	# 	query.execute()
-	# 	return "pantry was deleted"
 
 
 pantry_api = Blueprint('resources.pantry', __name__)

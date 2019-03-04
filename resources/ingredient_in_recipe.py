@@ -181,25 +181,26 @@ class RecipeIngredient(Resource):
 # # Add ingredient to recipe
 # # need user id and recipe id ### NEEDS USER AUTH
 ## rewrite to inclue u_id
-	@marshal_with(ingredient_in_recipe_fields)
+	# @marshal_with(ingredient_in_recipe_fields)
 	def post(self, r_id, i_id):
+		print(r_id, ' = recipe id');
 		args = self.reqparse.parse_args()
 		print(args, 'hitting args in post route in ingedient_in_recipe')
-		try:
-			## check db to see if ingredientInRecipe already exists
-			ing_in_recipe = models.IngredientInRecipe.get(models.IngredientInRecipe.recipe_id == r_id and models.IngredientInRecipe.ingredient_id == i_id )
-			return ing_in_recipe
+		# try:
+		# 	## check db to see if ingredientInRecipe already exists
+		# 	ing_in_recipe = models.IngredientInRecipe.select().where(models.IngredientInRecipe.recipe_id == r_id and models.IngredientInRecipe.ingredient_id == i_id )
+		# 	return 'ingredient already in recipe'
 
-		except models.IngredientInRecipe.DoesNotExist:
-			ing_in_recipe = models.IngredientInRecipe.create(
-				recipe_id=r_id,
-				ingredient_id=i_id,
-				amount=args["amount"],
-				unit=args["unit"]
-			)
-			ing_in_recipe.save()
-			print(ing_in_recipe, 'this is ing_in_recipe that was created')
-			return ing_in_recipe
+		# except models.IngredientInRecipe.DoesNotExist:
+		ing_in_recipe = models.IngredientInRecipe.create(
+			recipe_id=r_id,
+			ingredient_id=i_id,
+			amount=args["amount"],
+			unit=args["unit"]
+		)
+		ing_in_recipe.save()
+		print(ing_in_recipe, 'this is ing_in_recipe that was created')
+		return marshal(ing_in_recipe, ingredient_in_recipe_fields)
 
 
 
