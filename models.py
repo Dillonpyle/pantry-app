@@ -6,36 +6,20 @@ from flask_login import UserMixin
 from playhouse.db_url import connect
 import os
 
-# import config
 
-
-# DATABASE_URL = os.environ['DATABASE_URL']
-
-# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
-# DATABASE = SqliteDatabase(config.DATABASE_URI_SQLITE)
-# DATABASE = conn or PostgresqlDatabase(
-#     config.DATABASE_URI_PSQL,
-#     user=config.DATABASE_ADMIN,
-#     password=config.DATABASE_PASSWORD
-#     )
-    # import urlparse, psycopg2
-    # urlparse.uses_netloc.append('postgres')
-    # url = urlparse.urlparse(os.environ["DATABASE_URL"])
-    # DATABASE = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
 
 if 'HEROKU' in os.environ:
     DATABASE = connect(os.environ.get('DATABASE_URL'))
     # db_proxy.initialize(db)
 else:
     DATABASE = SqliteDatabase('mypantry.sqlite')
+    ## uncomment below if you want to use postgress locally
+    # import config
     # DATABASE = conn or PostgresqlDatabase(
     #     config.DATABASE_URI_PSQL,
     #     user=config.DATABASE_ADMIN,
     #     password=config.DATABASE_PASSWORD
     #     )
-
-
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
@@ -87,8 +71,6 @@ class RecipeApi(Model):
 
     class Meta:
         database = DATABASE
-
-# Ingredient of User
 
 
 class Pantry(Model):

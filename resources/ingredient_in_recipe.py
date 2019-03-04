@@ -176,7 +176,6 @@ class RecipeIngredient(Resource):
 			help = "no user_id provided",
 			location = ['form', 'json']
 			)
-		# super().__init__()
 
 # # Add ingredient to recipe
 # # need user id and recipe id ### NEEDS USER AUTH
@@ -188,6 +187,9 @@ class RecipeIngredient(Resource):
 		print(args, 'hitting args in post route in ingedient_in_recipe')
 		# try:
 		# 	## check db to see if ingredientInRecipe already exists
+
+		## if statement checking to see if ingredient already in recipe,
+		## not working now but should save for later
 		# 	ing_in_recipe = models.IngredientInRecipe.select().where(models.IngredientInRecipe.recipe_id == r_id and models.IngredientInRecipe.ingredient_id == i_id )
 		# 	return 'ingredient already in recipe'
 
@@ -238,9 +240,9 @@ class RecipeIngredientEdit(Resource):
 
 
 
-
-# # Edit amount or unit of ingredients in recipe
-# # need user id and recipe id
+# Still need to write this route
+# Edit amount or unit of ingredients in recipe
+# need user id and recipe id
 
 
 

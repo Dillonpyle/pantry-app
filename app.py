@@ -12,12 +12,8 @@ from resources.ingredient_in_recipe import ingredient_in_recipe_api
 
 import models
 import forms
+import os
 
-# if 'HEROKU' in os.environ:
-#     DEBUG = urlparse.urlparse(os.environ["DEBUG"])
-#     PORT = urlparse.urlparse(os.environ["PORT"])
-# else:
-# import config
 DEBUG = True
 PORT = 8000
 
@@ -25,6 +21,7 @@ app = Flask(__name__)
 app.secret_key = "af;ljlwenncv__lnwecvjkso"
 
 login_manager = LoginManager()
+
 # sets up our login for the app
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -57,22 +54,10 @@ app.register_blueprint(users_api, url_prefix='/api/v1')
 def index():
     return 'Pantry App'
 
-import os
-## import os at the top of your file 
-
 if 'HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
 
 if __name__ == '__main__':
     models.initialize()
-    # try:
-    #     models.User.create_user(
-    #         username="test",
-    #         password="asdf",
-    #         )
-    # except ValueError:
-    #     ## pass is do nothing
-    #     pass
-
     app.run(debug=DEBUG, port=PORT)
