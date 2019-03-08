@@ -11,7 +11,6 @@ from resources.ingredient_in_recipe import ingredient_in_recipe_api
 
 
 import models
-import forms
 import os
 
 DEBUG = True
