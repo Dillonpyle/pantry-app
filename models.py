@@ -8,10 +8,10 @@ import os
 
 
 
-if 'HEROKU' in os.environ:
-    DATABASE = connect(os.environ.get('DATABASE_URL'))
-    db_proxy.initialize(db)
-else:
+# if 'HEROKU' in os.environ:
+#     DATABASE = connect(os.environ.get('DATABASE_URL'))
+#     db_proxy.initialize(db)
+# else:
     DATABASE = SqliteDatabase('mypantry.sqlite')
     ## uncomment below if you want to use postgress locally
     # import config
