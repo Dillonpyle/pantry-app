@@ -35,11 +35,11 @@ def load_user(userid):
 
 
 # set up cors
-CORS(ingredients_api, origins=["https://dillonpantrybe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
-CORS(ingredient_in_recipe_api, origins=["https://dillonpantrybe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
-CORS(recipes_api, origins=["https://dillonpantrybe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
-CORS(pantry_api, origins=["https://dillonpantrybe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
-CORS(users_api, origins=["https://dillonpantrybe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
+CORS(ingredients_api, origins=["https://dillonpantryfe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
+CORS(ingredient_in_recipe_api, origins=["https://dillonpantryfe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
+CORS(recipes_api, origins=["https://dillonpantryfe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
+CORS(pantry_api, origins=["https://dillonpantryfe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["https://dillonpantryfe.herokuapp.com", "http://localhost:3000"], supports_credentials=True)
 
 
 app.register_blueprint(ingredients_api, url_prefix='/api/v1')
